@@ -112,6 +112,15 @@
     margin-bottom: 16px;
   }
 
+  .chart-area {
+    margin-bottom: 16px;
+    transition: opacity 0.35s ease;
+  }
+
+  .chart-area.dissolving {
+    opacity: 0;
+  }
+
   .description-box {
     padding: 14px 18px;
     background: #f9f7f3;
@@ -583,11 +592,19 @@ function renderTabs() {
 }
 
 function switchChart(idx) {
-  activeIdx = idx;
-  document.querySelectorAll('.tab').forEach((t, i) => {
-    t.className = 'tab' + (i === idx ? ' active' : '');
-  });
-  renderChart();
+  if (idx === activeIdx) return;
+  const area = document.querySelector('.chart-area');
+  area.classList.add('dissolving');
+  setTimeout(() => {
+    activeIdx = idx;
+    document.querySelectorAll('.tab').forEach((t, i) => {
+      t.className = 'tab' + (i === idx ? ' active' : '');
+    });
+    renderChart();
+    setTimeout(() => {
+      area.classList.remove('dissolving');
+    }, 30);
+  }, 350);
 }
 
 function renderChart() {
