@@ -177,11 +177,7 @@
     </div>
   </div>
 
-  <div class="convergence">
-    <h3>The Convergence</h3>
-    <p>These are not nine separate crises. They are nine measurements of the same crisis, taken from different angles. And they converge on the same window: the late 1970s through the early 1980s — the precise moment when the nation, confronted with real problems that demanded institutional adaptation, chose instead to dismantle the institutions.</p>
-    <p>The experiment has been running for half a century. The results are in. By every quantifiable metric — longevity, equality, literacy, trust, democratic function, physical health, civic cohesion — America is worse off than it was when the experiment began, and worse off than every comparable nation that chose a different path.</p>
-  </div>
+
 </div>
 
 <script>
@@ -331,6 +327,74 @@ const CHARTS = [
       fill: true,
     }],
     yMin: 0, yMax: 180, suffix: 's',
+  },
+  {
+    id: 'wealth-top1',
+    tab: '10. Wealth Concentration',
+    title: 'Share of Wealth Held by Top 1%',
+    subtitle: 'Federal Reserve / Piketty-Saez, 1962–2024',
+    source: 'Federal Reserve Distributional Financial Accounts; Piketty & Saez',
+    desc: 'The top 1% held roughly 22–24% of total net worth through the late 1970s. By 2024, their share had surged to 30.8%. The bottom 50% of Americans have experienced essentially zero net wealth growth since 1989. Wealth concentration and income inequality track the same inflection point.',
+    fill: true,
+    datasets: [{
+      label: 'Top 1% Share of Net Worth',
+      data: [{x:1962,y:33.4},{x:1965,y:34.4},{x:1969,y:31.1},{x:1972,y:29.1},{x:1976,y:22.0},{x:1979,y:22.5},{x:1983,y:24.5},{x:1986,y:25.8},{x:1989,y:22.8},{x:1992,y:23.5},{x:1995,y:24.2},{x:1998,y:25.6},{x:2001,y:24.5},{x:2004,y:25.3},{x:2007,y:26.7},{x:2010,y:26.3},{x:2013,y:27.8},{x:2016,y:29.3},{x:2019,y:30.5},{x:2022,y:30.5},{x:2024,y:30.8}],
+      borderColor: COLORS.dark,
+      backgroundColor: 'rgba(139,37,0,0.06)',
+      fill: true,
+    }],
+    yMin: 18, yMax: 36, suffix: '%',
+  },
+  {
+    id: 'housing',
+    tab: '11. Housing',
+    title: 'Home Price-to-Income Ratio',
+    subtitle: 'Census Bureau / Case-Shiller, 1960–2024',
+    source: 'U.S. Census Bureau; S&P/Case-Shiller; Visual Capitalist',
+    desc: 'In the 1960s, a typical home cost about 2.1 times annual household income. By 1985 it was 3.5x. By 2005 it exceeded 5x. After a brief correction following the 2008 crash, it climbed again — by 2024, the median home costs over 5 times the median income. The American Dream of homeownership began pricing out the middle class in the early 1980s.',
+    fill: true,
+    datasets: [{
+      label: 'Price-to-Income Ratio',
+      data: [{x:1960,y:2.1},{x:1965,y:2.2},{x:1970,y:2.3},{x:1975,y:2.6},{x:1980,y:3.0},{x:1985,y:3.5},{x:1990,y:3.7},{x:1995,y:3.4},{x:2000,y:3.8},{x:2005,y:5.1},{x:2007,y:5.2},{x:2010,y:3.6},{x:2015,y:4.0},{x:2019,y:4.4},{x:2022,y:5.0},{x:2024,y:5.1}],
+      borderColor: COLORS.brown,
+      backgroundColor: 'rgba(122,80,48,0.06)',
+      fill: true,
+    }],
+    yMin: 1.5, yMax: 6.0, suffix: 'x',
+  },
+  {
+    id: 'unions',
+    tab: '12. Union Membership',
+    title: 'Union Membership Rate',
+    subtitle: 'Bureau of Labor Statistics / CRS, 1945–2022',
+    source: 'Bureau of Labor Statistics; Congressional Research Service (R47596)',
+    desc: 'Union membership peaked at 34.2% in 1945 and held above 30% through 1961. It declined steadily through the 1960s and 1970s to 22.2% in 1980, then fell off a cliff — reaching 9.4% by 2022, the lowest since before the New Deal. The U.S. Treasury has documented that union membership and income inequality are mirror images of each other.',
+    fill: true,
+    datasets: [{
+      label: '% Workforce Unionized',
+      data: [{x:1945,y:34.2},{x:1950,y:33.0},{x:1955,y:32.5},{x:1960,y:30.4},{x:1965,y:28.0},{x:1970,y:25.7},{x:1975,y:23.4},{x:1980,y:22.2},{x:1983,y:20.1},{x:1986,y:17.5},{x:1990,y:16.1},{x:1993,y:15.8},{x:1996,y:14.5},{x:2000,y:13.5},{x:2004,y:12.5},{x:2008,y:12.4},{x:2012,y:11.3},{x:2016,y:10.7},{x:2020,y:10.8},{x:2022,y:9.4}],
+      borderColor: COLORS.blue,
+      backgroundColor: 'rgba(46,106,180,0.06)',
+      fill: true,
+    }],
+    yMin: 5, yMax: 38, suffix: '%',
+  },
+  {
+    id: 'global-gdp',
+    tab: '13. U.S. Global Share',
+    title: 'U.S. Share of World GDP',
+    subtitle: 'World Bank, 1960–2023',
+    source: 'World Bank national accounts data',
+    desc: 'The U.S. accounted for roughly 40% of world GDP in 1960. By 1980 it was 26%. Today it sits around 25%. The postwar order was built when America was the only industrial economy left standing. As Europe and Japan rebuilt and China industrialized, relative decline was inevitable — but it was sold to Americans as a crisis caused by government, rather than a natural rebalancing of the global economy.',
+    fill: true,
+    datasets: [{
+      label: 'U.S. % of World GDP',
+      data: [{x:1960,y:40.0},{x:1965,y:38.2},{x:1970,y:36.4},{x:1975,y:30.4},{x:1980,y:25.8},{x:1985,y:34.6},{x:1990,y:26.3},{x:1995,y:24.9},{x:2000,y:30.5},{x:2005,y:27.6},{x:2010,y:22.7},{x:2015,y:24.3},{x:2020,y:24.7},{x:2023,y:25.6}],
+      borderColor: COLORS.green,
+      backgroundColor: 'rgba(46,125,74,0.06)',
+      fill: true,
+    }],
+    yMin: 18, yMax: 45, suffix: '%',
   },
 ];
 
