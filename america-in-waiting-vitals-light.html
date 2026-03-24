@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>America in Waiting — The Vital Signs</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #ffffff;
+    color: #2a2a2a;
+    font-family: 'Libre Baskerville', Georgia, 'Times New Roman', serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 24px 16px 40px;
+  }
+
+  .header {
+    text-align: center;
+    border-bottom: 1px solid #e0dbd4;
+    padding-bottom: 20px;
+    margin-bottom: 24px;
+  }
+
+  .header .label {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #9a7e5a;
+    margin-bottom: 10px;
+  }
+
+  .header h1 {
+    font-size: clamp(18px, 4vw, 26px);
+    font-weight: 700;
+    line-height: 1.3;
+    color: #1a1a1a;
+    margin-bottom: 10px;
+  }
+
+  .header .subtitle {
+    font-size: 13px;
+    font-style: italic;
+    color: #6a6a6a;
+    line-height: 1.6;
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    justify-content: center;
+    margin-bottom: 24px;
+  }
+
+  .tab {
+    background: transparent;
+    border: 1px solid transparent;
+    color: #8a8078;
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: 11px;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .tab:hover {
+    color: #4a4a4a;
+    border-color: #d0cbc4;
+  }
+
+  .tab.active {
+    background: #f5f0e8;
+    border-color: #c8bfb0;
+    color: #1a1a1a;
+  }
+
+  .chart-area {
+    margin-bottom: 16px;
+  }
+
+  .chart-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 2px;
+  }
+
+  .chart-subtitle {
+    font-size: 12px;
+    color: #7a7a7a;
+    font-style: italic;
+    margin-bottom: 16px;
+  }
+
+  .chart-wrapper {
+    position: relative;
+    width: 100%;
+    height: 340px;
+    margin-bottom: 16px;
+  }
+
+  .description-box {
+    padding: 14px 18px;
+    background: #f9f7f3;
+    border: 1px solid #e8e2d8;
+    border-radius: 3px;
+  }
+
+  .description-box p {
+    font-size: 13px;
+    line-height: 1.7;
+    color: #3a3a3a;
+    margin: 0;
+  }
+
+  .description-box .source {
+    font-size: 10px;
+    color: #9a9080;
+    margin-top: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .convergence {
+    border-top: 1px solid #e0dbd4;
+    margin-top: 28px;
+    padding-top: 24px;
+  }
+
+  .convergence h3 {
+    font-size: 16px;
+    color: #1a1a1a;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .convergence p {
+    font-size: 13px;
+    line-height: 1.8;
+    color: #4a4a4a;
+    margin-bottom: 14px;
+  }
+
+  canvas {
+    width: 100% !important;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+
+  <div class="tabs" id="tabs"></div>
+
+  <div class="chart-area">
+    <div class="chart-title" id="chartTitle"></div>
+    <div class="chart-subtitle" id="chartSubtitle"></div>
+    <div class="chart-wrapper">
+      <canvas id="mainChart"></canvas>
+    </div>
+    <div class="description-box">
+      <p id="chartDesc"></p>
+      <div class="source" id="chartSource"></div>
+    </div>
+  </div>
+
+  <div class="convergence">
+    <h3>The Convergence</h3>
+    <p>These are not nine separate crises. They are nine measurements of the same crisis, taken from different angles. And they converge on the same window: the late 1970s through the early 1980s — the precise moment when the nation, confronted with real problems that demanded institutional adaptation, chose instead to dismantle the institutions.</p>
+    <p>The experiment has been running for half a century. The results are in. By every quantifiable metric — longevity, equality, literacy, trust, democratic function, physical health, civic cohesion — America is worse off than it was when the experiment began, and worse off than every comparable nation that chose a different path.</p>
+  </div>
+</div>
+
+<script>
+const COLORS = {
+  red: '#b83030',
+  blue: '#2e6ab4',
+  gold: '#a07820',
+  green: '#2e7d4a',
+  muted: '#7a7a60',
+  brown: '#7a5030',
+  dark: '#8b2500',
+  purple: '#5a4a7a',
+  grid: '#e8e2d8',
+  tick: '#7a7a6e',
+  refLine: 'rgba(139,37,0,0.5)',
+};
+
+// All charts use {x, y} point data so x-axis can be linear 1940–2025
+const CHARTS = [
+  {
+    id: 'trust-govt',
+    tab: '1. Trust in Govt',
+    title: 'Trust in Federal Government',
+    subtitle: 'Pew Research Center, 1958–2025',
+    source: 'Pew Research Center, National Election Studies, Gallup',
+    desc: 'In 1958, seventy-three percent of Americans trusted the federal government. Today: seventeen percent. The decline began with Vietnam and Watergate and has never recovered. Trust is no longer rooted in institutions — it has become entirely contingent on which party holds power.',
+    fill: true,
+    datasets: [{
+      label: '% Trust Government',
+      data: [{x:1958,y:73},{x:1964,y:77},{x:1968,y:61},{x:1972,y:53},{x:1974,y:36},{x:1976,y:33},{x:1980,y:25},{x:1984,y:44},{x:1988,y:41},{x:1992,y:29},{x:1996,y:27},{x:2000,y:44},{x:2001,y:60},{x:2004,y:47},{x:2007,y:24},{x:2010,y:22},{x:2013,y:19},{x:2015,y:19},{x:2019,y:17},{x:2021,y:24},{x:2023,y:16},{x:2025,y:17}],
+      borderColor: COLORS.gold,
+      backgroundColor: 'rgba(160,120,32,0.08)',
+      fill: true,
+    }],
+    yMin: 0, yMax: 85, suffix: '%',
+  },
+  {
+    id: 'trust-science',
+    tab: '2. Science by Party',
+    title: 'Confidence in Science by Party',
+    subtitle: 'Gallup, 1975–2021',
+    source: 'Gallup Confidence in Institutions Survey',
+    desc: 'In 1975, Republicans and Democrats trusted science at nearly identical rates — 72% and 67%. Today, Democrats stand at 79%. Republicans at 45% — a 27-point collapse. A country that organized its identity around scientific achievement now has a major party whose base regards scientists with suspicion.',
+    datasets: [
+      { label: 'Republican', data: [{x:1975,y:72},{x:1985,y:68},{x:1995,y:62},{x:2005,y:55},{x:2010,y:52},{x:2015,y:48},{x:2018,y:46},{x:2021,y:45}], borderColor: COLORS.red },
+      { label: 'Democrat', data: [{x:1975,y:67},{x:1985,y:70},{x:1995,y:72},{x:2005,y:75},{x:2010,y:76},{x:2015,y:78},{x:2018,y:79},{x:2021,y:79}], borderColor: COLORS.blue },
+      { label: 'Independent', data: [{x:1975,y:73},{x:1985,y:70},{x:1995,y:67},{x:2005,y:66},{x:2010,y:65},{x:2015,y:64},{x:2018,y:65},{x:2021,y:65}], borderColor: COLORS.muted, borderDash: [5,3] },
+    ],
+    yMin: 30, yMax: 85, suffix: '%',
+  },
+  {
+    id: 'trust-media',
+    tab: '3. Media by Party',
+    title: 'Trust in Mass Media by Party',
+    subtitle: 'Gallup, 1972–2024',
+    source: 'Gallup annual media trust survey',
+    desc: 'Republican trust in media: from 63% in the 1970s to 11% today — a 52-point freefall. The divergence tracks almost exactly to the rise of conservative media infrastructure: talk radio in the late 1980s, Fox News in 1996, digital outlets in the 2000s.',
+    datasets: [
+      { label: 'Republican', data: [{x:1972,y:68},{x:1976,y:63},{x:1998,y:52},{x:2002,y:49},{x:2005,y:35},{x:2008,y:27},{x:2012,y:26},{x:2016,y:14},{x:2020,y:10},{x:2024,y:11}], borderColor: COLORS.red },
+      { label: 'Democrat', data: [{x:1972,y:75},{x:1976,y:74},{x:1998,y:64},{x:2002,y:62},{x:2005,y:64},{x:2008,y:63},{x:2012,y:60},{x:2016,y:62},{x:2020,y:60},{x:2024,y:62}], borderColor: COLORS.blue },
+      { label: 'Independent', data: [{x:1972,y:67},{x:1976,y:68},{x:1998,y:55},{x:2002,y:51},{x:2005,y:45},{x:2008,y:40},{x:2012,y:38},{x:2016,y:30},{x:2020,y:28},{x:2024,y:30}], borderColor: COLORS.muted, borderDash: [5,3] },
+    ],
+    yMin: 0, yMax: 80, suffix: '%',
+  },
+  {
+    id: 'polarization',
+    tab: '4. Polarization',
+    title: 'Congressional Polarization',
+    subtitle: 'DW-NOMINATE, Poole & Rosenthal, 1950–2020',
+    source: 'Voteview / DW-NOMINATE scores',
+    desc: 'The gap between party means was stable from WWII through the late 1970s, then climbed to its highest point since Reconstruction. The movement is asymmetric — Democrats barely moved; Republicans shifted dramatically rightward. Moderates in Congress fell from ~35% to under 5%. They weren\'t radicalized. They were replaced.',
+    dualAxis: true,
+    datasets: [
+      { label: 'Party Mean Distance', data: [{x:1950,y:0.57},{x:1955,y:0.55},{x:1960,y:0.54},{x:1965,y:0.52},{x:1970,y:0.55},{x:1975,y:0.57},{x:1980,y:0.62},{x:1985,y:0.68},{x:1990,y:0.73},{x:1995,y:0.82},{x:2000,y:0.85},{x:2005,y:0.88},{x:2010,y:0.92},{x:2015,y:0.98},{x:2020,y:1.02}], borderColor: COLORS.red, yAxisID: 'y' },
+      { label: '% Moderates', data: [{x:1950,y:35},{x:1955,y:34},{x:1960,y:33},{x:1965,y:32},{x:1970,y:30},{x:1975,y:28},{x:1980,y:25},{x:1985,y:22},{x:1990,y:18},{x:1995,y:14},{x:2000,y:12},{x:2005,y:10},{x:2010,y:8},{x:2015,y:6},{x:2020,y:5}], borderColor: COLORS.blue, borderDash: [5,3], yAxisID: 'y1' },
+    ],
+    yMin: 0.4, yMax: 1.1, y1Min: 0, y1Max: 40, suffix: '', suffix1: '%',
+  },
+  {
+    id: 'gini',
+    tab: '5. Inequality',
+    title: 'Income Inequality (Gini Index)',
+    subtitle: 'U.S. Census Bureau, 1967–2024',
+    source: 'U.S. Census Bureau, Current Population Survey',
+    desc: 'The Gini coefficient was stable at ~0.39 from the late 1960s through the late 1970s. It began climbing around 1980 and has risen more than 25% since, reaching 0.49 in 2024. From 1979 to 2007, income after taxes quadrupled for the top 1%. For the middle 60%, it barely moved.',
+    fill: true,
+    datasets: [{
+      label: 'Gini Index',
+      data: [{x:1967,y:0.397},{x:1970,y:0.394},{x:1975,y:0.397},{x:1979,y:0.404},{x:1982,y:0.412},{x:1985,y:0.419},{x:1988,y:0.427},{x:1990,y:0.428},{x:1993,y:0.454},{x:1995,y:0.450},{x:2000,y:0.462},{x:2005,y:0.469},{x:2010,y:0.470},{x:2015,y:0.479},{x:2018,y:0.485},{x:2020,y:0.488},{x:2024,y:0.490}],
+      borderColor: COLORS.dark,
+      backgroundColor: 'rgba(139,37,0,0.06)',
+      fill: true,
+    }],
+    yMin: 0.38, yMax: 0.50,
+  },
+  {
+    id: 'life-exp',
+    tab: '6. Life Expectancy',
+    title: 'U.S. vs. Peer Country Life Expectancy',
+    subtitle: 'OECD / Peterson-KFF, 1980–2023',
+    source: 'Peterson-KFF Health System Tracker / OECD',
+    desc: 'The U.S. tracked with peer nations until the early 1980s, then fell behind. By 2023, Americans live 4.1 fewer years than the peer average — 78.4 vs. 82.5. The U.S. has the lowest life expectancy among comparable countries, the highest avoidable death rates, and the highest maternal and infant mortality.',
+    datasets: [
+      { label: 'United States', data: [{x:1980,y:73.7},{x:1985,y:74.7},{x:1990,y:75.4},{x:1995,y:75.8},{x:2000,y:76.8},{x:2005,y:77.6},{x:2010,y:78.7},{x:2015,y:78.7},{x:2019,y:78.8},{x:2020,y:77.0},{x:2021,y:76.4},{x:2023,y:78.4}], borderColor: COLORS.red },
+      { label: 'OECD Peer Average', data: [{x:1980,y:74.5},{x:1985,y:75.8},{x:1990,y:77.0},{x:1995,y:78.1},{x:2000,y:79.2},{x:2005,y:80.2},{x:2010,y:81.2},{x:2015,y:81.8},{x:2019,y:82.3},{x:2020,y:81.0},{x:2021,y:81.6},{x:2023,y:82.5}], borderColor: COLORS.green },
+    ],
+    yMin: 72, yMax: 84, suffix: ' yrs',
+  },
+  {
+    id: 'health-spend',
+    tab: '7. Health Spending',
+    title: 'Healthcare Spending Per Capita',
+    subtitle: 'OECD, 1980–2021 (USD)',
+    source: 'OECD Health Statistics / Commonwealth Fund',
+    desc: 'Two lines diverge from a common origin around 1980. U.S. spending rockets to over $12,000 per capita. Peer countries cluster around $5,000. We spend three times what comparable nations spend and die four years younger. The market was supposed to sort this out.',
+    datasets: [
+      { label: 'U.S. per capita', data: [{x:1980,y:1100},{x:1985,y:1800},{x:1990,y:2800},{x:1995,y:3800},{x:2000,y:4800},{x:2005,y:6700},{x:2010,y:8400},{x:2015,y:9500},{x:2019,y:10900},{x:2021,y:12200}], borderColor: COLORS.red },
+      { label: 'OECD Peer Avg', data: [{x:1980,y:800},{x:1985,y:1100},{x:1990,y:1600},{x:1995,y:2100},{x:2000,y:2600},{x:2005,y:3200},{x:2010,y:3800},{x:2015,y:4200},{x:2019,y:4700},{x:2021,y:5000}], borderColor: COLORS.green },
+    ],
+    yMin: 0, yMax: 13000, prefix: '$',
+  },
+  {
+    id: 'naep',
+    tab: '8. Reading Scores',
+    title: 'Reading Comprehension (NAEP)',
+    subtitle: "Nation's Report Card, 1992–2024",
+    source: 'National Assessment of Educational Progress (NAEP)',
+    desc: 'Fourth-grade reading in 2024 is indistinguishable from 1992. Thirty-two years of zero progress. A third of eighth-graders fall below the basic benchmark — the worst percentage ever recorded. Only 14% of 13-year-olds read for fun, down 13 points from 2012.',
+    datasets: [
+      { label: 'Grade 4', data: [{x:1992,y:217},{x:1998,y:215},{x:2002,y:219},{x:2005,y:219},{x:2009,y:221},{x:2011,y:221},{x:2013,y:222},{x:2015,y:223},{x:2017,y:222},{x:2019,y:220},{x:2022,y:217},{x:2024,y:215}], borderColor: COLORS.gold },
+      { label: 'Grade 8', data: [{x:1992,y:260},{x:1998,y:263},{x:2002,y:264},{x:2005,y:262},{x:2009,y:264},{x:2011,y:265},{x:2013,y:268},{x:2015,y:265},{x:2017,y:267},{x:2019,y:263},{x:2022,y:260},{x:2024,y:258}], borderColor: COLORS.purple },
+    ],
+    yMin: 210, yMax: 275,
+  },
+  {
+    id: 'attention',
+    tab: '9. Attention Span',
+    title: 'Average Screen Attention Span',
+    subtitle: 'Gloria Mark, UC Irvine, 2004–2020',
+    source: 'Gloria Mark, Attention Span (2023), replicated by 5 independent studies',
+    desc: 'In 2004, the average person stayed focused on a screen for two and a half minutes before switching. By 2012: 75 seconds. By 2016: 47 seconds — with half of all observations under 40. Madison designed self-governance for citizens who could hold a thought. We have built a society that cannot.',
+    datasets: [{
+      label: 'Seconds on screen',
+      data: [{x:2004,y:150},{x:2012,y:75},{x:2018,y:47}],
+      borderColor: COLORS.dark,
+      backgroundColor: 'rgba(139,37,0,0.06)',
+      fill: true,
+    }],
+    yMin: 0, yMax: 180, suffix: 's',
+  },
+];
+
+const X_MIN = 1940;
+const X_MAX = 2025;
+
+let chart = null;
+let activeIdx = 0;
+
+function renderTabs() {
+  const container = document.getElementById('tabs');
+  CHARTS.forEach((c, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'tab' + (i === 0 ? ' active' : '');
+    btn.textContent = c.tab;
+    btn.onclick = () => switchChart(i);
+    container.appendChild(btn);
+  });
+}
+
+function switchChart(idx) {
+  activeIdx = idx;
+  document.querySelectorAll('.tab').forEach((t, i) => {
+    t.className = 'tab' + (i === idx ? ' active' : '');
+  });
+  renderChart();
+}
+
+function renderChart() {
+  const c = CHARTS[activeIdx];
+  document.getElementById('chartTitle').textContent = c.title;
+  document.getElementById('chartSubtitle').textContent = c.subtitle;
+  document.getElementById('chartDesc').textContent = c.desc;
+  document.getElementById('chartSource').textContent = 'Source: ' + c.source;
+
+  if (chart) chart.destroy();
+
+  const ctx = document.getElementById('mainChart').getContext('2d');
+
+  const datasets = c.datasets.map((ds, i) => ({
+    ...ds,
+    borderWidth: ds.borderWidth || 2.5,
+    pointRadius: 3,
+    pointBackgroundColor: ds.borderColor || ds.backgroundColor,
+    tension: 0.3,
+    fill: (c.fill && i === 0) ? true : (ds.fill || false),
+  }));
+
+  // Plugin to draw the ≈1978 reference line
+  const refLinePlugin = {
+    id: 'refLine',
+    afterDraw(chartInstance) {
+      const xScale = chartInstance.scales.x;
+      const yScale = chartInstance.scales.y;
+      if (!xScale || !yScale) return;
+
+      const xPixel = xScale.getPixelForValue(1978);
+
+      const ctx2 = chartInstance.ctx;
+      ctx2.save();
+      ctx2.beginPath();
+      ctx2.setLineDash([6, 3]);
+      ctx2.strokeStyle = COLORS.refLine;
+      ctx2.lineWidth = 2;
+      ctx2.moveTo(xPixel, yScale.top);
+      ctx2.lineTo(xPixel, yScale.bottom);
+      ctx2.stroke();
+
+      ctx2.setLineDash([]);
+      ctx2.fillStyle = COLORS.dark;
+      ctx2.font = "italic 11px 'Libre Baskerville', Georgia, serif";
+      ctx2.textAlign = 'center';
+      ctx2.fillText('\u22481978', xPixel, yScale.top - 6);
+      ctx2.restore();
+    }
+  };
+
+  const scales = {
+    x: {
+      type: 'linear',
+      min: X_MIN,
+      max: X_MAX,
+      ticks: {
+        color: COLORS.tick,
+        font: { size: 11, family: "'Libre Baskerville', Georgia, serif" },
+        stepSize: 10,
+        callback: function(v) { return v; }
+      },
+      grid: { color: COLORS.grid },
+    },
+    y: {
+      min: c.yMin,
+      max: c.yMax,
+      ticks: {
+        color: COLORS.tick,
+        font: { size: 11, family: "'Libre Baskerville', Georgia, serif" },
+        callback: function(v) {
+          return (c.prefix || '') + (v < 1 && v > 0 ? v.toFixed(2) : (c.prefix === '$' ? (v/1000).toFixed(0) + 'k' : v)) + (c.suffix || '');
+        }
+      },
+      grid: { color: COLORS.grid },
+    },
+  };
+
+  if (c.dualAxis) {
+    scales.y1 = {
+      position: 'right',
+      min: c.y1Min,
+      max: c.y1Max,
+      ticks: {
+        color: COLORS.blue,
+        font: { size: 11, family: "'Libre Baskerville', Georgia, serif" },
+        callback: function(v) { return v + (c.suffix1 || ''); }
+      },
+      grid: { display: false },
+    };
+  }
+
+  chart = new Chart(ctx, {
+    type: 'line',
+    data: { datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { intersect: false, mode: 'nearest', axis: 'x' },
+      plugins: {
+        legend: {
+          display: c.datasets.length > 1,
+          labels: {
+            color: '#5a5a5a',
+            font: { size: 12, family: "'Libre Baskerville', Georgia, serif" },
+            padding: 16,
+            usePointStyle: true,
+          },
+        },
+        tooltip: {
+          backgroundColor: 'rgba(255,255,255,0.96)',
+          titleColor: '#1a1a1a',
+          bodyColor: '#3a3a3a',
+          borderColor: '#d0cbc4',
+          borderWidth: 1,
+          titleFont: { family: "'Libre Baskerville', Georgia, serif", weight: 'bold' },
+          bodyFont: { family: "'Libre Baskerville', Georgia, serif" },
+          padding: 10,
+          callbacks: {
+            title: function(items) {
+              if (items.length > 0) return String(Math.round(items[0].parsed.x));
+              return '';
+            },
+            label: function(context) {
+              let val = context.parsed.y;
+              if (val < 1 && val > 0) val = val.toFixed(3);
+              return context.dataset.label + ': ' + (c.prefix || '') + val + (c.suffix || '');
+            }
+          }
+        },
+      },
+      scales,
+    },
+    plugins: [refLinePlugin],
+  });
+}
+
+renderTabs();
+renderChart();
+</script>
+</body>
+</html>
