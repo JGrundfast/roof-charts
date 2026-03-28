@@ -180,27 +180,6 @@
     margin-bottom: 14px;
   }
 
-  .back-btn {
-    display: inline-block;
-    font-family: 'Libre Baskerville', Georgia, serif;
-    font-size: 11px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: #8b6540;
-    text-decoration: none;
-    border: 1px solid #d4ccc0;
-    padding: 8px 18px;
-    border-radius: 3px;
-    transition: all 0.2s;
-    margin-bottom: 10px;
-  }
-
-  .back-btn:hover {
-    background: #f5f0ea;
-    color: #5a3a1a;
-    border-color: #b0a898;
-  }
-
   .dash-header {
     text-align: center;
     margin-bottom: 14px;
@@ -231,9 +210,8 @@
 <div class="container">
 
   <div class="dash-header">
-    <a href="https://theroof.substack.com/p/america-in-waiting" class="back-btn">← Back to Essay</a>
     <h1>America in Waiting — The Vital Signs</h1>
-    <p>Seventeen data sets. Seventeen independent, nonpartisan sources. One conclusion.</p>
+    <p>Eighteen data sets. Eighteen independent, nonpartisan sources. One conclusion.</p>
   </div>
 
   <div class="tabs" id="tabs"></div>
@@ -759,6 +737,7 @@ function renderChart() {
     options: {
       responsive: true,
       maintainAspectRatio: false,
+      layout: { padding: { top: 20 } },
       interaction: { intersect: false, mode: 'nearest', axis: 'x' },
       plugins: {
         legend: {
