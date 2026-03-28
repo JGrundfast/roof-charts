@@ -271,8 +271,28 @@ const CHARTS = [
     ],
   },
   {
+    id: 'civic-engagement',
+    tab: '2. Civic Engagement',
+    title: 'Civic Organization Membership & Participation',
+    subtitle: 'General Social Survey / Putnam / Skocpol / Marquette, 1945–2025',
+    source: 'Robert Putnam, Bowling Alone (2000), Figure 34 and Ch. 3-4; General Social Survey (NORC); Theda Skocpol, Diminished Democracy (2003); Marquette Law School Poll (2025); Putnam & Garrett, The Upswing (2020).',
+    desc: 'Membership in cross-class civic organizations peaked in the late 1950s and early 1960s, then began a decline that accelerated through the 1970s and never reversed. The average American attended a club meeting once a month in the mid-1970s; by 2000 that rate had been cut by nearly 60%. Putnam estimated the causes: 25% television — which went from 10% of homes in 1950 to 90% by 1959 — and 50% generational change, with significant overlap between the two. Movement conservatism then exploited the civic vacuum that followed. The pattern is generational: the last Americans to grow up without television were also the last to sustain high levels of civic participation.',
+    datasets: [
+      { label: '% Adults in 1+ Civic Org', data: [{x:1945,y:55},{x:1950,y:58},{x:1955,y:62},{x:1960,y:64},{x:1965,y:63},{x:1970,y:60},{x:1975,y:55},{x:1980,y:52},{x:1985,y:48},{x:1990,y:44},{x:1995,y:40},{x:2000,y:38},{x:2005,y:36},{x:2010,y:35},{x:2015,y:34},{x:2020,y:33},{x:2025,y:33}], borderColor: COLORS.gold, fill: true, backgroundColor: 'rgba(160,120,32,0.06)' },
+      { label: 'Club Meetings per Year', data: [{x:1975,y:12},{x:1980,y:10},{x:1985,y:9},{x:1990,y:8},{x:1995,y:6},{x:2000,y:5},{x:2008,y:4}], borderColor: COLORS.blue, borderDash: [5,3], yAxisID: 'y1' },
+    ],
+    dualAxis: true,
+    yMin: 25, yMax: 70, y1Min: 0, y1Max: 14, suffix: '%', suffix1: '',
+    links: [
+      {label: 'Putnam, Bowling Alone: Figure 34 — Membership Trends', url: 'https://usrotary.org/wp-content/uploads/2020/04/Bowling-alone.pdf'},
+      {label: 'Marquette Law School Poll: Civic Participation (2025)', url: 'https://today.marquette.edu/2025/12/poll-results-illuminate-american-civic-life/'},
+      {label: 'Brookings: America\'s Civic Condition', url: 'https://www.brookings.edu/articles/americas-civic-condition-a-glance-at-the-evidence/'},
+      {label: 'Skocpol: Decline of Civic Groups (USD Lecture)', url: 'https://www.plaintalk.net/local_news/article_bd0307c4-f9cf-504f-9d87-9aef2c79dd44.html'},
+    ],
+  },
+  {
     id: 'trust-science',
-    tab: '2. Science by Party',
+    tab: '3. Science by Party',
     title: 'Confidence in Science by Party',
     subtitle: 'Gallup, 1975–2021',
     source: 'Gallup Confidence in Institutions Survey',
@@ -290,7 +310,7 @@ const CHARTS = [
   },
   {
     id: 'trust-media',
-    tab: '3. Media by Party',
+    tab: '4. Media by Party',
     title: 'Trust in Mass Media by Party',
     subtitle: 'Gallup, 1972–2024',
     source: 'Gallup annual media trust survey',
@@ -307,7 +327,7 @@ const CHARTS = [
   },
   {
     id: 'polarization',
-    tab: '4. Polarization',
+    tab: '5. Polarization',
     title: 'Congressional Polarization',
     subtitle: 'DW-NOMINATE, Poole & Rosenthal, 1950–2020',
     source: 'Voteview / DW-NOMINATE scores',
@@ -326,7 +346,7 @@ const CHARTS = [
   },
   {
     id: 'gini',
-    tab: '5. Inequality',
+    tab: '6. Inequality',
     title: 'Income Inequality (Gini Index)',
     subtitle: 'U.S. Census Bureau, 1967–2024',
     source: 'U.S. Census Bureau, Current Population Survey',
@@ -348,7 +368,7 @@ const CHARTS = [
   },
   {
     id: 'life-exp',
-    tab: '6. Life Expectancy',
+    tab: '7. Life Expectancy',
     title: 'U.S. vs. Peer Country Life Expectancy',
     subtitle: 'OECD / Peterson-KFF, 1980–2023',
     source: 'Peterson-KFF Health System Tracker / OECD',
@@ -365,7 +385,7 @@ const CHARTS = [
   },
   {
     id: 'health-spend',
-    tab: '7. Health Spending',
+    tab: '8. Health Spending',
     title: 'Healthcare Spending Per Capita',
     subtitle: 'OECD, 1980–2021 (USD)',
     source: 'OECD Health Statistics / Commonwealth Fund',
@@ -382,7 +402,7 @@ const CHARTS = [
   },
   {
     id: 'naep',
-    tab: '8. Reading Scores',
+    tab: '9. Reading Scores',
     title: 'Reading Comprehension (NAEP)',
     subtitle: "Nation's Report Card, 1992–2024",
     source: 'National Assessment of Educational Progress (NAEP)',
@@ -400,7 +420,7 @@ const CHARTS = [
   },
   {
     id: 'attention',
-    tab: '9. Attention Span',
+    tab: '10. Attention Span',
     title: 'Average Screen Attention Span',
     subtitle: 'Gloria Mark, UC Irvine, 2004–2020',
     source: 'Gloria Mark, Attention Span (2023), replicated by 5 independent studies',
@@ -421,7 +441,7 @@ const CHARTS = [
   },
   {
     id: 'wealth-top1',
-    tab: '10. Wealth',
+    tab: '11. Wealth',
     title: 'Share of Wealth Held by Top 1%',
     subtitle: 'Fed DFA (1989–2024) & Wolff/SCF (1962–1983)',
     source: 'Fed Distributional Financial Accounts (FRED series WFRBST01134), 1989–2024; Edward Wolff, "Household Wealth Trends" (NBER WP 28383), SCF data for 1962, 1969, 1983. Note: Pre-1989 and post-1989 use different methodologies.',
@@ -443,7 +463,7 @@ const CHARTS = [
   },
   {
     id: 'housing',
-    tab: '11. Housing',
+    tab: '12. Housing',
     title: 'Home Price-to-Income Ratio',
     subtitle: 'Census / Case-Shiller / Visual Capitalist, 1960–2024',
     source: 'Clever Real Estate analysis of Census Decennial & ACS data (1960–2017); Visual Capitalist / Case-Shiller & Census (1985–2025); LongtermTrends.com Case-Shiller/Census composite.',
@@ -465,7 +485,7 @@ const CHARTS = [
   },
   {
     id: 'unions',
-    tab: '12. Unions',
+    tab: '13. Unions',
     title: 'Union Membership Rate',
     subtitle: 'BLS / Congressional Research Service, 1945–2022',
     source: 'Congressional Research Service report R47596, "A Brief Examination of Union Membership Data" (2023), compiling BLS CES data, CPS microdata, and Directory of National Unions. Peak: 34.2% (1945). Above 30%: 1943–1961. Decline: 30.4% (1960) → 23.4% (late 1970s) → 22.2% (1980) → 9.4% (2022).',
@@ -487,7 +507,7 @@ const CHARTS = [
   },
   {
     id: 'global-gdp',
-    tab: '13. U.S. Global Share',
+    tab: '14. U.S. Global Share',
     title: 'U.S. Share of World GDP',
     subtitle: 'World Bank (current USD), 1960–2023',
     source: 'World Bank national accounts data, current USD. Compiled by Visual Capitalist (2021). Note: Measured in current USD, not PPP. Exchange rate fluctuations cause year-to-year volatility (e.g., 1985 spike reflects strong dollar, not real output change). Wikipedia/IMF PPP estimate for 1960 is lower at ~29%.',
@@ -508,7 +528,7 @@ const CHARTS = [
   },
   {
     id: 'election-cost',
-    tab: '14. Election $',
+    tab: '15. Election $',
     title: 'Total Cost of Federal Elections',
     subtitle: 'OpenSecrets / FEC / CRS, 1976–2024',
     source: 'OpenSecrets Cost of Election data (1998–2024); CRS report 97-793 for 1976–1996 (general election candidates, current dollars). 2024 figure is OpenSecrets projection. All figures in billions, nominal dollars.',
@@ -530,7 +550,7 @@ const CHARTS = [
   },
   {
     id: 'outside-spend',
-    tab: '15. Dark Money',
+    tab: '16. Dark Money',
     title: 'Outside Spending on Federal Elections',
     subtitle: 'OpenSecrets / FEC, 2000–2024',
     source: 'OpenSecrets Outside Spending by Cycle. Includes independent expenditures, electioneering communications, and communication costs by non-candidate, non-party groups (super PACs, 501(c)(4)s, etc.).',
@@ -547,26 +567,6 @@ const CHARTS = [
     links: [
       {label: 'OpenSecrets: Total Outside Spending by Cycle', url: 'https://www.opensecrets.org/outside-spending/by_cycle'},
       {label: 'OpenSecrets: Money-in-Politics Timeline', url: 'https://www.opensecrets.org/resources/learn/timeline'},
-    ],
-  },
-  {
-    id: 'civic-engagement',
-    tab: '16. Civic Engagement',
-    title: 'Civic Organization Membership & Participation',
-    subtitle: 'General Social Survey / Putnam / Skocpol / Marquette, 1945–2025',
-    source: 'Robert Putnam, Bowling Alone (2000), Figure 34 and Ch. 3-4; General Social Survey (NORC); Theda Skocpol, Diminished Democracy (2003); Marquette Law School Poll (2025); Putnam & Garrett, The Upswing (2020).',
-    desc: 'Membership in cross-class civic organizations peaked in the late 1950s and early 1960s, then began a decline that accelerated through the 1970s and never reversed. The average American attended a club meeting once a month in the mid-1970s; by 2000 that rate had been cut by nearly 60%. Putnam estimated the causes: 25% television — which went from 10% of homes in 1950 to 90% by 1959 — and 50% generational change, with significant overlap between the two. Movement conservatism then exploited the civic vacuum that followed. The pattern is generational: the last Americans to grow up without television were also the last to sustain high levels of civic participation.',
-    datasets: [
-      { label: '% Adults in 1+ Civic Org', data: [{x:1945,y:55},{x:1950,y:58},{x:1955,y:62},{x:1960,y:64},{x:1965,y:63},{x:1970,y:60},{x:1975,y:55},{x:1980,y:52},{x:1985,y:48},{x:1990,y:44},{x:1995,y:40},{x:2000,y:38},{x:2005,y:36},{x:2010,y:35},{x:2015,y:34},{x:2020,y:33},{x:2025,y:33}], borderColor: COLORS.gold, fill: true, backgroundColor: 'rgba(160,120,32,0.06)' },
-      { label: 'Club Meetings per Year', data: [{x:1975,y:12},{x:1980,y:10},{x:1985,y:9},{x:1990,y:8},{x:1995,y:6},{x:2000,y:5},{x:2008,y:4}], borderColor: COLORS.blue, borderDash: [5,3], yAxisID: 'y1' },
-    ],
-    dualAxis: true,
-    yMin: 25, yMax: 70, y1Min: 0, y1Max: 14, suffix: '%', suffix1: '',
-    links: [
-      {label: 'Putnam, Bowling Alone: Figure 34 — Membership Trends', url: 'https://usrotary.org/wp-content/uploads/2020/04/Bowling-alone.pdf'},
-      {label: 'Marquette Law School Poll: Civic Participation (2025)', url: 'https://today.marquette.edu/2025/12/poll-results-illuminate-american-civic-life/'},
-      {label: 'Brookings: America\'s Civic Condition', url: 'https://www.brookings.edu/articles/americas-civic-condition-a-glance-at-the-evidence/'},
-      {label: 'Skocpol: Decline of Civic Groups (USD Lecture)', url: 'https://www.plaintalk.net/local_news/article_bd0307c4-f9cf-504f-9d87-9aef2c79dd44.html'},
     ],
   },
   {
