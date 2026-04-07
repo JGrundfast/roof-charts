@@ -229,6 +229,12 @@
     </div>
   </div>
 
+  <div class="essay-frame" style="border-top: 1px solid #e0dbd4; margin-top: 28px; padding-top: 28px;">
+    <p style="font-size: 14px; line-height: 1.9; color: #2a2a2a; margin-bottom: 16px;">Lay these graphs on top of one another. These are not eighteen separate crises. They are eighteen measurements of the same crisis — and they converge on the same point of origin: the decade civic disengagement began.</p>
+    <p style="font-size: 14px; line-height: 1.9; color: #2a2a2a; margin-bottom: 16px;">The same shocks that battered the United States in the 1970s hit every wealthy democracy on earth. The others maintained universal healthcare, protected union bargaining rights, and enforced campaign finance limits. The difference wasn't the shocks. It was who was still showing up for democracy when they hit. In 1980, American life expectancy was virtually identical to that of peer nations. By 2023, it had fallen nearly four years behind.</p>
+    <p style="font-size: 14px; line-height: 1.9; color: #2a2a2a; margin: 0;">The Greatest Generation won a war, came home, built institutions, participated in civic life en masse, and held consumer spending steady at roughly 61% of GDP. They invested in the country. The Boomers inherited all of it, allowed the safety net to be dismantled, defunded research to 0.63% of GDP, and let unions collapse to 9%. Consumer spending rose to 70% of GDP. They spent what their parents built. And they never put it back.</p>
+  </div>
+
 
 </div>
 
@@ -259,7 +265,7 @@ const CHARTS = [
     fill: true,
     datasets: [{
       label: '% Trust Government',
-      data: [{x:1958,y:73},{x:1964,y:77},{x:1968,y:61},{x:1972,y:53},{x:1974,y:36},{x:1976,y:33},{x:1980,y:25},{x:1984,y:44},{x:1988,y:41},{x:1992,y:29},{x:1996,y:27},{x:2000,y:44},{x:2001,y:60},{x:2004,y:47},{x:2007,y:24},{x:2010,y:22},{x:2013,y:19},{x:2015,y:19},{x:2019,y:17},{x:2021,y:24},{x:2023,y:16},{x:2025,y:17}],
+      data: [{x:1958,y:73},{x:1962,y:76},{x:1964,y:77},{x:1966,y:65},{x:1968,y:61},{x:1970,y:54},{x:1972,y:53},{x:1974,y:36},{x:1976,y:33},{x:1978,y:29},{x:1980,y:25},{x:1982,y:33},{x:1984,y:44},{x:1986,y:38},{x:1988,y:41},{x:1990,y:28},{x:1992,y:29},{x:1994,y:21},{x:1996,y:27},{x:1998,y:40},{x:2000,y:44},{x:2001,y:60},{x:2004,y:47},{x:2006,y:32},{x:2008,y:30},{x:2010,y:22},{x:2012,y:19},{x:2014,y:24},{x:2016,y:20},{x:2018,y:18},{x:2020,y:20},{x:2022,y:25},{x:2023,y:22},{x:2025,y:17}],
       borderColor: COLORS.gold,
       backgroundColor: 'rgba(160,120,32,0.08)',
       fill: true,
@@ -676,7 +682,8 @@ function renderChart() {
   const datasets = c.datasets.map((ds, i) => ({
     ...ds,
     borderWidth: ds.borderWidth || 2.5,
-    pointRadius: 3,
+    pointRadius: 4,
+    pointHoverRadius: 7,
     pointBackgroundColor: ds.borderColor || ds.backgroundColor,
     tension: 0.3,
     fill: (c.fill && i === 0) ? true : (ds.fill || false),
